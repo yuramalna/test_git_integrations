@@ -1,12 +1,12 @@
 // Exception handling globals
-static FUNCPTR test_isalnum_helix_75966_excBaseHookBk;
-static TASK_ID test_isalnum_helix_75966_TaskId;
-static int test_isalnum_helix_75966_excHandledFlag = 0;
+static FUNCPTR test_HELIX_75966_excBaseHookBk;
+static TASK_ID test_HELIX_75966_TaskId;
+static int test_HELIX_75966_excHandledFlag = 0;
 extern FUNCPTR _func_excBaseHook;
-void* test_isalnum_helix_75966_excRetAddr = NULL;
+void* test_HELIX_75966_excRetAddr = NULL;
 
 // Exception handler
-static BOOL test_isalnum_helix_75966_excHook
+static BOOL test_HELIX_75966_excHook
     (
     int             vecNum,
     void        *   pEsf,
@@ -14,77 +14,83 @@ static BOOL test_isalnum_helix_75966_excHook
     EXC_INFO    *   pExcInfo
     )
     {
-    if (taskIdSelf() == test_isalnum_helix_75966_TaskId)
+    if (taskIdSelf() == test_HELIX_75966_TaskId)
         {
-        test_isalnum_helix_75966_excHandledFlag = 1;
-        pRegSet->pc = (INSTR *) (test_isalnum_helix_75966_excRetAddr);
+        test_HELIX_75966_excHandledFlag = 1;
+        pRegSet->pc = (INSTR *) (test_HELIX_75966_excRetAddr);
 
         return TRUE;
         }
 
-    if (test_isalnum_helix_75966_excBaseHookBk != NULL)
+    if (test_HELIX_75966_excBaseHookBk != NULL)
         {
-        return test_isalnum_helix_75966_excBaseHookBk (vecNum, pEsf, pRegSet, pExcInfo);
+        return test_HELIX_75966_excBaseHookBk (vecNum, pEsf, pRegSet, pExcInfo);
         }
 
     return FALSE;
     }
 
 // Exception hook setup/cleanup
-static void test_isalnum_helix_75966_setExcHook(void* retAddr)
+static void test_HELIX_75966_setExcHook(void* retAddr)
     {
-    if (test_isalnum_helix_75966_excBaseHookBk == NULL)
+    if (test_HELIX_75966_excBaseHookBk == NULL)
         {
-        test_isalnum_helix_75966_excBaseHookBk = _func_excBaseHook;
+        test_HELIX_75966_excBaseHookBk = _func_excBaseHook;
         }
-    _func_excBaseHook = test_isalnum_helix_75966_excHook;
-    test_isalnum_helix_75966_excRetAddr = retAddr;    
+    _func_excBaseHook = test_HELIX_75966_excHook;
+    test_HELIX_75966_excRetAddr = retAddr;    
     }
 
-static void test_isalnum_helix_75966_reSetExcHook()
+static void test_HELIX_75966_reSetExcHook()
     {
-    _func_excBaseHook = test_isalnum_helix_75966_excBaseHookBk;
+    _func_excBaseHook = test_HELIX_75966_excBaseHookBk;
     }
 
-void test_isalnum_helix_75966(void (*setup)(void), void (*cleanup)(void)) 
+// Stub implementations (if needed)
+
+void test_isalnum_HELIX_75966(void (*setup)(void), void (*cleanup)(void)) 
 {
     (*setup)();
     
     // Initialize exception handling
-    test_isalnum_helix_75966_TaskId = taskIdSelf ();
-    test_isalnum_helix_75966_excHandledFlag = 0;
+    test_HELIX_75966_TaskId = taskIdSelf ();
+    test_HELIX_75966_excHandledFlag = 0;
 
     // Set exception hook before critical section
-    test_isalnum_helix_75966_setExcHook(&&test_isalnum_helix_75966_excLabel);
+    test_HELIX_75966_setExcHook(&&test_HELIX_75966_excLabel);
 
     // TEST IMPLEMENTATION
     // Critical section that may cause exception
     // 1. Set up test data
-    int testValues[] = {'A', 'a', '0', '!', 'Z', 'z', '9', '@'};
+    int testChars[] = {'A', 'a', '0', '!', 'Z', 'z', '9', '@'};
     int expectedResults[] = {_UP, _LO, _DI, 0, _UP, _LO, _DI, 0};
-    int numTests = sizeof(testValues) / sizeof(testValues[0]);
+    int numTests = sizeof(testChars) / sizeof(testChars[0]);
     int result;
-    int i;
+    int passed = 1;
 
     // 2. Execute test
-    for (i = 0; i < numTests; i++) {
-        result = isalnum(testValues[i]);
-
-        // 3. Verify results
+    for (int i = 0; i < numTests; i++) {
+        result = isalnum(testChars[i]);
         if (result != expectedResults[i]) {
-            printf("FAILED: isalnum(%c) returned %d, expected %d\n", testValues[i], result, expectedResults[i]);
-        } else {
-            printf("PASSED: isalnum(%c) returned %d as expected\n", testValues[i], result);
+            printf("Test failed for input %c: expected %d, got %d\n", testChars[i], expectedResults[i], result);
+            passed = 0;
         }
+    }
+
+    // 3. Verify results
+    if (passed) {
+        printf("PASSED\n");
+    } else {
+        printf("FAILED\n");
     }
 
     // 4. Check error conditions using errnoGet() if applicable
 
-    test_isalnum_helix_75966_excLabel:
-        test_isalnum_helix_75966_reSetExcHook();
+    test_HELIX_75966_excLabel:
+        test_HELIX_75966_reSetExcHook();
         
     printf ("HELIX-75966: %s",
-            test_isalnum_helix_75966_excHandledFlag ? 
+            test_HELIX_75966_excHandledFlag ? 
                     "Exception successfully handled\n" 
                     : "Exception not handled\n");    
 

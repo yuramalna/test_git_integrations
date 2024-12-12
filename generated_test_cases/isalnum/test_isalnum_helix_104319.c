@@ -1,10 +1,3 @@
-// Include necessary headers
-#include <vxWorks.h>
-#include <stdio.h>
-#include <ctype.h>
-#include <taskLib.h>
-#include <errnoLib.h>
-
 // Exception handling globals
 static FUNCPTR test_HELIX_104319_excBaseHookBk;
 static TASK_ID test_HELIX_104319_TaskId;
@@ -65,6 +58,7 @@ void test_isalnum_HELIX_104319(void (*setup)(void), void (*cleanup)(void))
     test_HELIX_104319_setExcHook(&&test_HELIX_104319_excLabel);
 
     // TEST IMPLEMENTATION
+    // Critical section that may cause exception
     int c = 255;
     int result = isalnum(c);
 

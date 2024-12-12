@@ -66,7 +66,13 @@ void test_isalnum_HELIX_104321(void (*setup)(void), void (*cleanup)(void))
     result = isalnum(c);
 
     // Verify results
-    // Since the behavior is undefined for INT_MIN, we expect an exception to be handled
+    if (result == 0) {
+        printf("Expected result: 0\n");
+        printf("PASSED\n");
+    } else {
+        printf("Expected result: 0\n");
+        printf("FAILED\n");
+    }
 
     test_HELIX_104321_excLabel:
         test_HELIX_104321_reSetExcHook();
