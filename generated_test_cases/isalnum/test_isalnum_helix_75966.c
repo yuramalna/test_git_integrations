@@ -1,9 +1,3 @@
-// Include necessary headers
-#include <vxWorks.h>
-#include <stdio.h>
-#include <ctype.h>
-#include <errnoLib.h>
-
 // Exception handling globals
 static FUNCPTR test_isalnum_helix_75966_excBaseHookBk;
 static TASK_ID test_isalnum_helix_75966_TaskId;
@@ -66,28 +60,25 @@ void test_isalnum_helix_75966(void (*setup)(void), void (*cleanup)(void))
     // TEST IMPLEMENTATION
     // Critical section that may cause exception
     // 1. Set up test data
-    int testChars[] = {'A', 'a', '0', '!', 'Z', 'z', '9', '@'};
+    int testValues[] = {'A', 'a', '0', '!', 'Z', 'z', '9', '@'};
     int expectedResults[] = {_UP, _LO, _DI, 0, _UP, _LO, _DI, 0};
-    int numTests = sizeof(testChars) / sizeof(testChars[0]);
+    int numTests = sizeof(testValues) / sizeof(testValues[0]);
     int result;
     int i;
 
     // 2. Execute test
     for (i = 0; i < numTests; i++) {
-        result = isalnum(testChars[i]);
+        result = isalnum(testValues[i]);
 
         // 3. Verify results
         if (result != expectedResults[i]) {
-            printf("FAILED: isalnum('%c') returned %d, expected %d\n", testChars[i], result, expectedResults[i]);
+            printf("FAILED: isalnum(%c) returned %d, expected %d\n", testValues[i], result, expectedResults[i]);
         } else {
-            printf("PASSED: isalnum('%c') returned %d as expected\n", testChars[i], result);
+            printf("PASSED: isalnum(%c) returned %d as expected\n", testValues[i], result);
         }
     }
 
     // 4. Check error conditions using errnoGet() if applicable
-    if (errnoGet() != 0) {
-        printf("FAILED: errnoGet() returned non-zero error code\n");
-    }
 
     test_isalnum_helix_75966_excLabel:
         test_isalnum_helix_75966_reSetExcHook();

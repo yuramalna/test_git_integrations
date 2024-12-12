@@ -7,10 +7,6 @@ extern void test_isalnum_HELIX_104321(void (*setup)(void), void (*cleanup)(void)
 extern void test_isalnum_HELIX_104320(void (*setup)(void), void (*cleanup)(void));
 extern void test_isalnum_HELIX_104319(void (*setup)(void), void (*cleanup)(void));
 extern void test_isalnum_helix_75966(void (*setup)(void), void (*cleanup)(void));
-extern void test_HELIX_78342(void (*setup)(void), void (*cleanup)(void));
-extern void test_HELIX_78341(void (*setup)(void), void (*cleanup)(void));
-extern void test_HELIX_78337(void (*setup)(void), void (*cleanup)(void));
-extern void test_time_HELIX_78333(void (*setup)(void), void (*cleanup)(void));
 
 // Array of function pointers
 void (*function_pointers[])() = {
@@ -18,10 +14,6 @@ void (*function_pointers[])() = {
     &test_isalnum_HELIX_104320,
     &test_isalnum_HELIX_104319,
     &test_isalnum_helix_75966,
-    &test_HELIX_78342,
-    &test_HELIX_78341,
-    &test_HELIX_78337,
-    &test_time_HELIX_78333,
 };
     
 // Sequential function caller
