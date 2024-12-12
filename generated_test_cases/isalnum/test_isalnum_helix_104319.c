@@ -59,9 +59,12 @@ void test_isalnum_HELIX_104319(void (*setup)(void), void (*cleanup)(void))
 
     // TEST IMPLEMENTATION
     // Critical section that may cause exception
-    int c = 255;
-    int result = isalnum(c);
-    
+    int result;
+    int c = 255; // Test input
+
+    // Execute test
+    result = isalnum(c);
+
     // Verify results
     if (result == 0) {
         printf("PASSED: Expected result is 0, got %d\n", result);

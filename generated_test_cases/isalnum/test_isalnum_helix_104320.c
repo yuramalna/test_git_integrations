@@ -60,14 +60,21 @@ void test_isalnum_HELIX_104320(void (*setup)(void), void (*cleanup)(void))
     // TEST IMPLEMENTATION
     // Critical section that may cause exception
     int result;
-    int c = INT_MAX; // Test input
+    int c = INT_MAX;
 
     // Execute test
     result = isalnum(c);
 
     // Verify results
-    // Since the behavior is undefined for INT_MAX, we expect an exception
+    if (result == 0) {
+        printf("Expected result: 0, Actual result: %d\n", result);
+        printf("PASSED\n");
+    } else {
+        printf("Expected result: 0, Actual result: %d\n", result);
+        printf("FAILED\n");
+    }
 
+    // Check error conditions using errnoGet() if applicable
     test_HELIX_104320_excLabel:
         test_HELIX_104320_reSetExcHook();
         
