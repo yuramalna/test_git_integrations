@@ -6,14 +6,14 @@
 extern void test_isalnum_HELIX_104321(void (*setup)(void), void (*cleanup)(void));
 extern void test_isalnum_HELIX_104320(void (*setup)(void), void (*cleanup)(void));
 extern void test_isalnum_HELIX_104319(void (*setup)(void), void (*cleanup)(void));
-extern void test_isalnum_HELIX_75966(void (*setup)(void), void (*cleanup)(void));
+extern void test_isalnum_helix_75966(void (*setup)(void), void (*cleanup)(void));
 
 // Array of function pointers
 void (*function_pointers[])() = {
     &test_isalnum_HELIX_104321,
     &test_isalnum_HELIX_104320,
     &test_isalnum_HELIX_104319,
-    &test_isalnum_HELIX_75966,
+    &test_isalnum_helix_75966,
 };
     
 // Sequential function caller

@@ -66,24 +66,16 @@ void test_isalnum_HELIX_104320(void (*setup)(void), void (*cleanup)(void))
     result = isalnum(c);
 
     // Verify results
-    if (test_HELIX_104320_excHandledFlag)
-    {
-        printf("HELIX-104320: Exception successfully handled\n");
-    }
-    else
-    {
-        printf("HELIX-104320: Exception not handled\n");
-    }
-
-    // Check error conditions using errnoGet() if applicable
-    if (errnoGet() != 0)
-    {
-        printf("HELIX-104320: Error occurred, errno: %d\n", errnoGet());
-    }
+    // Since the behavior is undefined for INT_MAX, we expect an exception
 
     test_HELIX_104320_excLabel:
         test_HELIX_104320_reSetExcHook();
         
+    printf ("HELIX-104320: %s",
+            test_HELIX_104320_excHandledFlag ? 
+                    "Exception successfully handled\n" 
+                    : "Exception not handled\n");    
+
     // Cleanup
     (*cleanup)();
 }

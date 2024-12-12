@@ -61,12 +61,12 @@ void test_isalnum_HELIX_104319(void (*setup)(void), void (*cleanup)(void))
     // Critical section that may cause exception
     int c = 255;
     int result = isalnum(c);
-
+    
     // Verify results
     if (result == 0) {
-        printf("HELIX-104319: PASSED\n");
+        printf("PASSED: Expected result is 0, got %d\n", result);
     } else {
-        printf("HELIX-104319: FAILED - Expected 0, got %d\n", result);
+        printf("FAILED: Expected result is 0, got %d\n", result);
     }
 
     test_HELIX_104319_excLabel:
